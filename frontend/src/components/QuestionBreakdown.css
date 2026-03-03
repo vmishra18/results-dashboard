@@ -1,0 +1,114 @@
+.qb-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid #e0e0e0;
+}
+
+.qb-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  margin-bottom: 12px;
+}
+
+.qb-header h3 {
+  margin: 0;
+}
+
+.qb-controls {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.qb-controls label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.85rem;
+  color: #444;
+}
+
+.qb-controls select {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background: #fff;
+}
+
+.qb-export {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+}
+
+.qb-list {
+  display: grid;
+  gap: 10px;
+}
+
+.qb-row {
+  width: 100%;
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 12px;
+  border-radius: 10px;
+  border: 1px solid #eee;
+  background: #fff;
+  cursor: pointer;
+}
+
+.qb-row:hover {
+  background: #fafafa;
+}
+
+.qb-seq {
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.qb-title {
+  font-size: 0.95rem;
+  margin-bottom: 4px;
+}
+
+.qb-meta {
+  font-size: 0.85rem;
+  color: #666;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid #ddd;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.chip-answered {
+  background: #f0f7ff;
+  border-color: #cfe7ff;
+}
+
+.chip-unanswered {
+  background: #fff7f0;
+  border-color: #ffe1c7;
+}
+
+.chip-reflection {
+  background: #f6f7f9;
+  border-color: #e2e6ea;
+}
