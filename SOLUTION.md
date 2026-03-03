@@ -1,136 +1,84 @@
 # Solution – Vishal Mishra
 
-## Task Completed
+**Task Completed**
 
 Frontend task (dashboard redesign with visualisation and UX enhancements)
 
-## Time Spent
+**Time Spent**
 
-Approximately 3 hours and 15 mins (excluding Docker setup time).
+Approximately 3 hours 15 minutes (Docker setup excluded). I kept scope tight and didn’t add extra features outside the brief.
 
 ## Approach
 
-I started by running the project locally and reviewing the existing **AssessmentResults** component to understand how data was structured and rendered.
+I started by running the project locally and going through the existing **AssessmentResults** component to understand how the API response was structured and how the data was being displayed.
 
-The current UI displayed summary information but did not include any visual comparison or question-level breakdown. My goal was to improve clarity without restructuring the whole application.
+The original UI showed overall progress and score clearly, but there wasn’t much visibility at the individual question level. My goal was to make it easier to analyse results without changing the app structure or overcomplicating it.
 
-I approached the task in phases:
+I worked through it step by step. First, I checked the API response using curl and looked closely at how **element_scores** and **question_answers** were structured. Once I understood the shape of the data, I planned how it would need to be transformed for both the chart and the filtering logic. I also kept the changes component-based (small focused components) so the main **AssessmentResults** container stayed readable, and I added a **typecheck** script (**tsc --noEmit**) because it wasn’t included by default.
 
-1. Confirm API structure and inspect returned data.
-2. Plan data transformations required for visualisation.
-3. Implement the bar chart for score comparison.
-4. Build the question breakdown list.
-5. Add modal for detailed view.
-6. Add filtering and sorting.
-7. Improve loading and error states.
-8. Final responsive polish and cleanup.
+I implemented the chart first to make sure the scoring data was behaving as expected. After that, I built the question list and added the modal for detailed viewing. Once the core functionality was working, I added filtering and sorting. Finally, I improved loading states, error handling, and basic responsiveness.
 
-I tried to keep changes incremental and consistent with the existing architecture.
+Throughout, I tried to stay consistent with the existing code style and structure. I avoided introducing new UI libraries or patterns that weren’t already part of the project.
 
-## Implementation Details
+## Visualisation
 
-### Visualisations
+I used Recharts to build a simple bar chart showing the percentage score for each answered Likert question. Given the small dataset, a bar chart felt like the clearest and simplest way to compare performance across questions.
 
-I implemented a **bar chart using Recharts** to display score percentage per answered Likert question.
+Only answered Likert questions are included in the chart. Reflection questions and unanswered questions are excluded so the chart doesn’t show incomplete or misleading data. Likert scores are converted to percentages so they match how scoring is represented elsewhere in the interface.
 
-I chose a bar chart because:
-
-- It clearly compares performance across questions.
-- It works well for small datasets.
-- It is quick to interpret visually.
-
-Only answered Likert questions are included in the chart. Reflection and unanswered questions are excluded to avoid misleading visual data.
+I used ResponsiveContainer to avoid layout issues on smaller screens and kept the chart height fixed to prevent jumping as data changes.
 
 ## Question Breakdown
 
-I flattened **element_scores[].question_answers** into a single array and sorted questions by sequence.
+Because the API groups questions under **element_scores**, I flattened the nested **question_answers** into a single ordered list before rendering. I wrapped that transformation in **useMemo** to avoid recalculating it on every render.
 
-Each row shows:
+Each row displays the sequence number, title, element, and a status indicator. For answered Likert questions, a percentage chip is shown. Reflection and unanswered questions are clearly labelled.
 
-- Question sequence
-- Title
-- Status badge (Answered / Unanswered / Reflection)
-- Score chip (for answered Likert questions)
+Clicking a row opens a modal with the full question details. This includes the full question text, selected answer (if available), numeric score, and reflection text. I chose to use a modal instead of expandable rows to keep the main list clean and easier to scan.
 
-Clicking a row opens a modal with:
+## UX Improvements
 
-- Full question text
-- Selected answer
-- Numeric value
-- Reflection text
+Alongside the required breakdown and visualisation, I added a few small usability improvements.
 
-This keeps the main list clean while allowing detailed inspection.
+Filtering allows switching between all questions, answered, unanswered, and reflection questions. Sorting can be toggled between default sequence order and highest score first. Filtering runs before sorting so the behaviour feels consistent.
 
-## UX Enhancements Implemented
+I also added a simple client-side JSON export feature so the currently visible question data can be downloaded. This was implemented entirely on the frontend to keep things straightforward.
 
-**1. Detailed Question Modal**
+For network handling, I improved loading and error states. There’s a loading indicator while fetching, and a clear error message with a retry button if something goes wrong. I tested this using an invalid instance ID to make sure the state transitions worked properly.
 
-- Opens on row click.
-- Shows full context without cluttering the main layout.
-- Closes via button or outside click.
+I also adjusted the layout using CSS Grid and basic media queries to prevent horizontal overflow on smaller screens.
 
-**2. Filtering & Sorting**
+## Tools
 
-- Filter by: All / Answered / Unanswered / Reflection.
-- Sort by: Default sequence / Highest score.
-- Filtering is applied before sorting.
+Recharts was added for the chart. Other than that, I used the existing project setup and styling approach to keep everything consistent.
 
-**3. Loading & Error Handling**
-
-- Loading message during API fetch.
-- Friendly error message with retry button.
-- Tested with invalid instance ID.
-
-**4. Export JSON**
-
-- Allows downloading visible questions as JSON.
-- Lightweight implementation using client-side data.
-
-## Tools & Libraries Used
-
-- **Recharts** – for bar chart visualisation.
-- Existing project dependencies and styling approach.
-- No UI frameworks were introduced to keep consistency.
-
-### AI Tools Used
-
-- ChatGPT – used for:
-  - Quick reference on Recharts configuration.
-  - TypeScript type refinement.
-  - Minor refactoring suggestions.
-
-All design decisions, structure, and explanations were written by me.
+I used ChatGPT a couple times to sanity-check Recharts props and a TS type edge-case. The overall structure, implementation decisions, and this explanation are my own.
 
 ## Testing
 
-- **docker-compose up -d**
-- Verified API response using curl.
-- Checked UI in browser (**http://localhost:3000**).
-- Ran:
-  - **npm run typecheck**
-  - **npm run build**
-- Tested error handling using an invalid instance ID.
-- Checked layout responsiveness on smaller screen widths.
+I verified the API response using curl and confirmed the UI renders correctly at **http://localhost:3000.**
 
-## Challenges & Solutions
+I ran:
 
-**1. Structuring API data for chart usage**
-The API groups questions under element scores. I flattened and memoised the data using **useMemo** to simplify chart and filtering logic.
+- **npm run typecheck**
+- **npm run build**
 
-**2. Handling mixed question types**
-Likert and reflection questions required different rendering logic. I separated visualisation logic from display logic to avoid condition-heavy components.
+to make sure there were no type or production build issues.
 
-**3. Maintaining clean component structure**
-To avoid a large monolithic component, I separated chart, list, and modal into smaller components while keeping data flow simple.
+I manually tested:
+
+- A valid instance ID
+- An invalid instance ID (error state)
+- Different filtering and sorting combinations
+- Modal open/close behaviour
+- Smaller screen sizes
+
+## Challenges
+
+The main challenge was the nested API shape: **question_answers** live under each **element_scores** entry. I initially rendered per element, but it made filtering/sorting awkward and duplicated UI logic. Flattening once, sorting by **question_sequence**, and then deriving the chart/filter views from the same list kept the UI predictable and the code simpler.
+
+Handling the mixed question types also needed care — reflection questions don’t have a numeric score, and unanswered Likert questions shouldn’t show a % chip or appear in the chart.
 
 ## Trade-offs & Future Improvements
 
-Given the time expectations for this project which was mentioned 2-3 hour , I focused on clarity and stability over feature richness.
-
-If more time were available, I would:
-
-- Add chart tooltips with richer context.
-- Improve styling polish and spacing.
-- Add unit tests for transformation logic.
-- Implement keyboard navigation improvements.
-- Add dark mode toggle.
+Given the time constraint, I prioritised clarity and correctness over extra polish. With more time, I’d add a couple React Testing Library tests around the transform helpers, improve keyboard accessibility for the modal (focus trap + ESC to close), and add chart interactions (tooltips/drill-down).

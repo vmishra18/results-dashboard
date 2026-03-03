@@ -62,7 +62,7 @@ export default function ScoreByQuestionBarChart({ questions }: Props) {
             <XAxis dataKey="label" />
             <YAxis domain={[0, 100]} tickFormatter={(v) => `${v}%`} />
             <Tooltip formatter={(v) => [`${v}%`, "Score"]} />
-            <Bar dataKey="percent" />
+            <Bar dataKey="percent" fill="#3498db" />
           </BarChart>
         </ResponsiveContainer>
       </div>
