@@ -1,0 +1,28 @@
+.chart-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid #e0e0e0;
+}
+
+.chart-header h3 {
+  margin: 0 0 4px 0;
+}
+
+.chart-header p {
+  margin: 0;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.chart-wrap {
+  margin-top: 12px;
+}
+
+.chart-empty {
+  padding: 14px;
+  border-radius: 10px;
+  background: #f6f7f9;
+  color: #444;
+  border: 1px dashed #cfd6dd;
+}
