@@ -7,7 +7,7 @@ export type Insight = {
 export type QuestionAnswer = {
   question_id: string
   question_title: string
-  question_suite: string | null
+  question_suite: string | null 
   question_sequence: number
   is_reflection: boolean
   reflection_prompt: string | null 
