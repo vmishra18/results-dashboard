@@ -11,7 +11,7 @@ export type QuestionAnswer = {
   question_sequence: number
   is_reflection: boolean
   reflection_prompt: string | null
-  element: string | null
+  element: string | null 
   max_score: number
   is_answered: boolean
   answer_id?: string | null
