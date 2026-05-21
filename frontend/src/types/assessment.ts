@@ -2,8 +2,8 @@ export type Insight = {
   type: string
   message: string
   positive: boolean
-}
-
+} 
+ 
 export type QuestionAnswer = {
   question_id: string
   question_title: string
