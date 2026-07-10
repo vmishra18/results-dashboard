@@ -2,7 +2,7 @@
 
 **Task Completed**
 
-Frontend task (dashboard redesign with visualisation and UX enhancements)
+Frontend task (dashboard redesign with visualisation and UX enhancements) 
 
 **Time Spent**
 
